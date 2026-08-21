@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">YT Grab</string>
+    <string name="downloading_placeholder">Preparing download…</string>
+    <string name="download_channel_name">Downloads</string>
+</resources>
