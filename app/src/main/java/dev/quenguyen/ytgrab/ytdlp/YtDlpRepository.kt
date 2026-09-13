@@ -41,7 +41,7 @@ class YtDlpRepository(context: Context) {
 
     fun buildDownloadRequest(task: DownloadTask): YoutubeDLRequest {
         val request = YoutubeDLRequest(task.sourceUrl)
-        request.addOption("-o", File(downloadsDir, "%(title).150s.%(ext)s").absolutePath)
+        request.addOption("-o", File(downloadsDir, OutputTemplate.forUrl(task.sourceUrl)).absolutePath)
         request.addOption("--no-playlist")
         when (task.format) {
             MediaFormat.MP4 -> {
