@@ -17,4 +17,7 @@ interface DownloadHistoryDao {
 
     @Delete
     suspend fun delete(entity: DownloadHistoryEntity)
+
+    @Query("DELETE FROM download_history")
+    suspend fun clearAll()
 }

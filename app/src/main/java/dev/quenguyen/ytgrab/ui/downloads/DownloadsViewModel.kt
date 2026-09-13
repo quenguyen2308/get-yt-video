@@ -27,4 +27,8 @@ class DownloadsViewModel(private val historyDao: DownloadHistoryDao) : ViewModel
     fun deleteHistoryEntry(entity: DownloadHistoryEntity) {
         viewModelScope.launch { historyDao.delete(entity) }
     }
+
+    fun clearHistory() {
+        viewModelScope.launch { historyDao.clearAll() }
+    }
 }
