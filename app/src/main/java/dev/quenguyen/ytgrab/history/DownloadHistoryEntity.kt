@@ -12,4 +12,5 @@ data class DownloadHistoryEntity(
     val qualityLabel: String,
     val contentUri: String,
     val completedAtMillis: Long,
+    val fileSizeBytes: Long,
 )

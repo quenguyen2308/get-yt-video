@@ -32,6 +32,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.quenguyen.ytgrab.history.DownloadHistoryEntity
+import dev.quenguyen.ytgrab.history.FileSizeFormatter
 import dev.quenguyen.ytgrab.model.DownloadStatus
 import dev.quenguyen.ytgrab.model.DownloadTask
 import dev.quenguyen.ytgrab.model.MediaFormat
@@ -136,7 +137,10 @@ private fun HistoryRow(entity: DownloadHistoryEntity, onOpen: () -> Unit, onDele
             modifier = Modifier.weight(1f).clickable(onClick = onOpen),
         ) {
             Text(entity.title, maxLines = 1, style = MaterialTheme.typography.bodyMedium)
-            Text("${entity.format} · ${entity.qualityLabel}", style = MaterialTheme.typography.bodySmall)
+            Text(
+                "${entity.format} · ${entity.qualityLabel} · ${FileSizeFormatter.formatMb(entity.fileSizeBytes)}",
+                style = MaterialTheme.typography.bodySmall,
+            )
         }
         IconButton(onClick = onDelete) {
             Icon(Icons.Default.Delete, contentDescription = "Delete")

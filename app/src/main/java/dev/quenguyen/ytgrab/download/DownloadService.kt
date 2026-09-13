@@ -103,11 +103,12 @@ class DownloadService : LifecycleService() {
                     it.copy(status = DownloadStatus.FAILED, errorMessage = "Could not save output file")
                 }
             } else {
+                val fileSizeBytes = newFile.length()
                 newFile.delete()
                 DownloadQueueRepository.update(task.id) {
                     it.copy(status = DownloadStatus.COMPLETED, progress = 100f, outputUri = savedUri.toString())
                 }
-                saveHistory(task, savedUri.toString())
+                saveHistory(task, savedUri.toString(), fileSizeBytes)
             }
         } catch (e: Exception) {
             // A user-initiated cancel kills the process, which makes execute() throw here too —
@@ -134,7 +135,7 @@ class DownloadService : LifecycleService() {
             ?.forEach { it.delete() }
     }
 
-    private suspend fun saveHistory(task: DownloadTask, contentUri: String) {
+    private suspend fun saveHistory(task: DownloadTask, contentUri: String, fileSizeBytes: Long) {
         val qualityLabel = when (val q = task.quality) {
             is OutputQuality.Video -> q.label
             is OutputQuality.Audio -> q.label
@@ -148,6 +149,7 @@ class DownloadService : LifecycleService() {
                 qualityLabel = qualityLabel,
                 contentUri = contentUri,
                 completedAtMillis = System.currentTimeMillis(),
+                fileSizeBytes = fileSizeBytes,
             )
         )
     }

@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [DownloadHistoryEntity::class], version = 1, exportSchema = false)
+@Database(entities = [DownloadHistoryEntity::class], version = 2, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun downloadHistoryDao(): DownloadHistoryDao
@@ -20,7 +20,12 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "ytgrab.db",
-                ).build().also { instance = it }
+                )
+                    // Personal sideloaded app with no user-facing export of this data — destructive
+                    // migration (drop + recreate) is simpler than a real Migration for the
+                    // fileSizeBytes column added in version 2.
+                    .fallbackToDestructiveMigration()
+                    .build().also { instance = it }
             }
     }
 }
